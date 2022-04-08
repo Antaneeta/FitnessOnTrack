@@ -35,5 +35,8 @@
       }
     }
   ],
-  "configuration_version": "1"
+  "configuration_version": "1",
+  "react-native": {
+    "crashlytics_debug_enabled": true
+  }
 }

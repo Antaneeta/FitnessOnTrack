@@ -16,8 +16,12 @@ import {
   StackedBarChart,
 } from 'react-native-chart-kit';
 import {hp, wp} from '../../utils/screenResponsiveFunctions';
+import { useNavigation } from '@react-navigation/native';
+import { screens } from '../../constants';
 
 const DashBoard = () => {
+  const navigation =useNavigation()
+
   const user = useSelector(state => state.auth.user);
 
   const onSignOut = () => {
@@ -26,6 +30,9 @@ const DashBoard = () => {
       .then(() => console.log('User signed out!'))
       .catch(error => console.error(error));
   };
+  const showDrawer =() => {
+    navigation.openDrawer();
+  }
 
   useEffect(() => {
     console.log(user);
@@ -35,14 +42,15 @@ const DashBoard = () => {
     <View style={styles.mainContainer}>
       <View style={styles.topNav}>
         <Button
-          iconName={'navicon'}
-          iconSize={40}
+          iconName={'menu'}
+          iconSize={25}
           iconColor={color.TextPrimaryColor}
+          onPress={showDrawer}
         />
 
         <View>
-          <Text style={styles.welcomeText}>Welcome Back</Text>
-          <Text style={styles.name}> Antaneeta Fernando</Text>
+          <Text style={styles.welcomeText}>Welcome Back, </Text>
+          <Text style={styles.name}>Antaneeta Fernando</Text>
         </View>
         <Button
           iconName={'bell'}
@@ -71,7 +79,7 @@ const DashBoard = () => {
           <Text style={styles.cardSubText}>Check</Text>
         </View>
       </View>
-      <View style={{marginHorizontal: 25}}>
+      <View style={{marginHorizontal: 25,flex:1}}>
         <Text style={styles.name2}>Activity Status</Text>
         <View style={styles.shadowContainer}>
           <Progress.Bar progress={0.3} width={200} style={{flexDirection:'column'}} />
@@ -139,9 +147,10 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   topNav: {
-    marginHorizontal: 25,
-    marginVertical: 20,
     flexDirection: 'row',
+    marginVertical:25,
+    marginHorizontal:25,
+    alignItems:'center',
     justifyContent: 'space-between',
   },
   welcomeText: {
@@ -162,8 +171,9 @@ const styles = StyleSheet.create({
     borderRadius:15,
     borderColor:color.BackgroundColor,
     padding:50,
-    width:wp(50)
+    transform: [{ rotate: "-90deg" }]
   },
+  
 });
 
 const chartConfig = {

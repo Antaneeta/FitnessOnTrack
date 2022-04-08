@@ -3,11 +3,14 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Provider} from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import {useDispatch} from 'react-redux';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import Routes from './src/navigation';
 import {setUser} from './src/redux/actions/authActions';
 
 const App = props => {
+
+  
   const dispatch = useDispatch();
 
   const [initializing, setInitializing] = useState(true);
@@ -22,6 +25,10 @@ const App = props => {
     return subscriber;
   }, []);
 
+  useEffect(() => {
+    crashlytics().log('App mounted.');
+  }, []);
+  
   if (initializing) return null;
 
   return <Routes />;

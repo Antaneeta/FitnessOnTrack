@@ -6,7 +6,9 @@ const BackgroundColor= '#ffff';
 const Gray2 ='#ADA4A5';
 const White= '#ffff';
 const LightBlue ='#B4C0FE';
-const purple ='#C58BF2'
+const purple ='#C58BF2';
+const primaryPurple ='#EEA4CE';
+const Black ='#000'
 
 export {
     TextPrimaryColor,
@@ -17,5 +19,7 @@ export {
     Gray2,
     White,
     LightBlue,
-    purple
+    purple,
+    primaryPurple,
+    Black
 }

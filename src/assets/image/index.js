@@ -11,6 +11,11 @@ const faceBook = require('./facebook.png');
 const Background =require('./Background.png')
 const workoutGirl = require('./workoutGirl.png')
 const welcomeScreen =require('./welcomeScreen.png')
+const workout1 =require('./workout1.png')
+const workout2 =require('./workout2.png')
+const AbWorkout = require('./AbWorkout.png')
+const fullbodyWorkout = require('./fullbodyWorkout.png')
+const lowerbodyWorkout = require ('./lowerbodyWorkout.png')
 export {
     onb1,
     onb2,
@@ -24,5 +29,10 @@ export {
     faceBook,
     Background,
     workoutGirl,
-    welcomeScreen
+    welcomeScreen,
+    workout1,
+    workout2,
+    AbWorkout,
+    fullbodyWorkout,
+    lowerbodyWorkout
 }

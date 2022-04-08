@@ -4,6 +4,9 @@ import SignIn from "./auth/SignIn/SignIn"
 import OnboardScreen from "./auth/Onboarding"
 import ProfileComplete from "./auth/ProfileComplete/ProfileComplete"
 import Welcome from "./auth/Welcome/Welcome"
+import WorkoutTracker from "./dashboard/workoutTracker/WorkoutTracker"
+import WorkoutDetail from "./dashboard/workoutTracker/WorkoutDetail"
+import WorkoutRouitine from "./dashboard/workoutPlanner/WorkoutRouitine"
 
 export{
     OnboardScreen,
@@ -12,5 +15,8 @@ export{
     SignIn,
     ProfileComplete,
     Welcome,
+    WorkoutTracker,
+    WorkoutDetail,
+    WorkoutRouitine
     
 }

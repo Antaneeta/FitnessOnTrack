@@ -1,18 +1,20 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { BorderColor } from '../../Themes/colors'
 import Icon from 'react-native-vector-icons/Feather';
+
+
+import { BorderColor } from '../../Themes/colors'
 
 
 const Button = props => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={props.onPress}>
        <Icon
             color={props.iconColor}
             name={props.iconName}
             size={props.iconSize}
           />
-    </View>
+    </TouchableOpacity>
   )
 }
 
@@ -23,8 +25,9 @@ const styles = StyleSheet.create({
         backgroundColor: BorderColor,
         borderRadius:10,
         borderColor:BorderColor,
-        width:60,
-        height:60,
-        alignItems:'center'
+        width:50,
+        height:50,
+        alignItems:'center',
+        justifyContent:'center'
     }
 })
