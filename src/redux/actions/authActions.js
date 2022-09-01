@@ -1,14 +1,13 @@
 const authActionTypes = {
-    SIGN_IN: 'SIGN_IN',
-    SIGN_UP: 'SIGN_UP',
-    SIGN_OUT: 'SIGN_OUT',
+    SET_INITIAL_ROUTE: 'SET_INITIAL_ROUTE',
     SET_USER: 'SET_USER',
+    SET_USER_PROFILE: 'SET_USER_PROFILE'
 }
 
-export const signInAction = payload => ({ type: authActionTypes.SIGN_IN, payload })
-
-export const signOutAction = () => ({ type: authActionTypes.SIGN_OUT })
-
 export const setUser = payload => ({ type: authActionTypes.SET_USER, payload })
+
+export const setInitialRoute = payload => ({ type: authActionTypes.SET_INITIAL_ROUTE, payload })
+
+export const setUserProfile = payload => ({ type: authActionTypes.SET_USER_PROFILE, payload })
 
 export default authActionTypes

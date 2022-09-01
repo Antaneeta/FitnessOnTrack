@@ -8,16 +8,16 @@ import * as color from '../../Themes/colors';
 const Header = props => {
   
   
-  const LeftIcon = props?.leftIcon ? props.leftIcon : () => <Feather name='chevron-left' size={30} color={color.Black}/>
-  const RightIcon = props?.rightIcon ? props.rightIcon : () => <Entypo name='dots-two-horizontal' size={30} color={color.Black}/>
+  const LeftIcon = props?.leftIcon ? props.leftIcon : () => <View style={styles.buttonContainer}><Feather name='chevron-left' size={30} color={color.Black}/></View>
+  const RightIcon = props?.rightIcon ? props.rightIcon : () => <View style={styles.buttonContainer}><Entypo name='dots-two-horizontal' size={30} color={color.Black}/></View>
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.buttonContainer}>
+      <TouchableOpacity onPress={props?.onPress}>
           <LeftIcon/>
       </TouchableOpacity>
             {props?.title ? <Text style={[styles.title, props.titleStyle]}>{props?.title}</Text> : <></>}
-      <TouchableOpacity style={styles.buttonContainer}>
+      <TouchableOpacity onPress={props.onRightPress}>
           <RightIcon/>
       </TouchableOpacity> 
          

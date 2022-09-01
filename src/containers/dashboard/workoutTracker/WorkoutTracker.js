@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Animated, ScrollView, FlatList} from 'react-native';
+import {View, Text, StyleSheet, Animated, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import React, {useRef, useState} from 'react';
 import {
   LineChart,
@@ -14,11 +14,17 @@ import {Layout, Header, WorkoutTrainCard} from '../../../components';
 import {hp, wp} from '../../../utils/screenResponsiveFunctions';
 import WorkoutCatogoryCard from '../../../components/common/WorkoutCatogoryCard';
 import * as images from '../../../assets/image';
+import { screens } from '../../../constants';
+import { useNavigation } from '@react-navigation/native';
 
 const BANNER_H = 350;
 
 const WorkoutTracker = () => {
   const scrollA = useRef(new Animated.Value(0)).current;
+  const navigation =useNavigation()
+  const onclick = () => {
+    navigation.navigate(screens.WORKOUT_ROUITINE)
+  }
 
   const [workout, setWork] = useState(ITEMS)
   const [train, setTrain] = useState(ITEMSET)
@@ -61,9 +67,9 @@ const WorkoutTracker = () => {
             }}>
             <View style={styles.blueCard}>
               <Text style={styles.cardText}>Daily Workout Schedule</Text>
-              <View style={styles.subcard}>
+              <TouchableOpacity style={styles.subcard} onPress={onclick}>
                 <Text style={styles.cardSubText}>Check</Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <View style={styles.upcomingTitle}>
                 <Text style={styles.upcomigText}>Upcoming Workout</Text>

@@ -6,6 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import AuthStack from "./auth";
 import { useSelector } from "react-redux";
 import DrawerNavigation from "./dashboard";
+import MyTabs from "./bottomTab/BottomTab";
 
 const Routes = (props) => {
   const { user } = useSelector((state) => state.auth);

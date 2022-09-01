@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Animated, ScrollView, FlatList} from 'react-native';
+import {View, Text, StyleSheet, Animated, ScrollView, FlatList, Image} from 'react-native';
 import React, {useRef, useState} from 'react';
 import {
   LineChart,
@@ -9,11 +9,14 @@ import {
   StackedBarChart,
 } from 'react-native-chart-kit';
 
+
 import * as color from '../../../Themes/colors';
-import {Layout, Header, WorkoutTrainCard} from '../../../components';
+import {Layout, Header, WorkoutTrainCard, TextInputWithIcon} from '../../../components';
 import {hp, wp} from '../../../utils/screenResponsiveFunctions';
 import WorkoutCatogoryCard from '../../../components/common/WorkoutCatogoryCard';
+
 import * as images from '../../../assets/image';
+import * as colors from '../../../Themes/colors'
 
 const BANNER_H = 350;
 
@@ -34,23 +37,15 @@ const WorkoutDetail = () => {
   return (
     <Layout>
       <View style={styles.topContainer}>
-        <Header title={'Workout Tracker'} />
+        <Header title={''} />
         <Animated.ScrollView
           onScroll={Animated.event(
             [{nativeEvent: {contentOffset: {y: scrollA}}}],
             {useNativeDriver: true},
           )}
           scrollEventThrottle={16}>
-          <Animated.View style={styles.banner(scrollA)}>
-            <LineChart
-              data={data}
-              width={wp(95)}
-              height={hp(40)}
-              verticalLabelRotation={30}
-              chartConfig={chartConfig}
-              style={{padding: 10}}
-              bezier
-            />
+          <Animated.View style={[styles.banner(scrollA),{justifyContent:'center',alignItems:'center'}]}>
+            <Image source={images.meal}/>
           </Animated.View>
           <View
             style={{
@@ -58,34 +53,47 @@ const WorkoutDetail = () => {
               height: hp(200),
               borderTopLeftRadius: 40,
               borderTopRightRadius: 40,
+              paddingVertical:20
             }}>
-            <View style={styles.blueCard}>
-              <Text style={styles.cardText}>Daily Workout Schedule</Text>
+            <View style={styles.primartView}>
+              <Text style={styles.cardText}>Blue Bary Pan Cake</Text>
+            </View>
+            <View style={styles.primartView}>
+              <Text style={[styles.cardText,{color:colors.DarkPurple}]}>Nutrition</Text>
               <View style={styles.subcard}>
-                <Text style={styles.cardSubText}>Check</Text>
+                <Image source={images.kalIcon} style={{height:25,width:25}}/>
+                <Text>56cal</Text>
+                <Text style={styles.cardSubText}>carbs</Text>
+              </View>
+              <View style={styles.subcard}>
+                <Image source={images.FatIcon} style={{height:25,width:25}}/>
+                <Text>56cal</Text>
+                <Text style={styles.cardSubText}>carbs</Text>
+              </View>
+              <View style={styles.subcard}>
+                <Image source={images.ProteinIcon} style={{height:25,width:25}}/>
+                <Text>56cal</Text>
+                <Text style={styles.cardSubText}>carbs</Text>
+              </View>
+              <View style={styles.subcard}>
+                <Image source={images.CarboIcon} style={{height:25,width:25}}/>
+                <Text>56cal</Text>
+                <Text style={styles.cardSubText}>carbs</Text>
               </View>
             </View>
-            <View style={styles.upcomingTitle}>
-                <Text style={styles.upcomigText}>Upcoming Workout</Text>
-                <Text>See more</Text>
+            <View style={styles.primartView}>
+              <Text style={styles.upcomigText}>Description</Text>
+              <Text>gfdygfuyhvbdusvbsudvbwdbvwiuvbwuvwyvcwyvciuyvciuwvycu</Text>
             </View>
-            <View>
-              <FlatList
-                data={workout}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index?.toString()}
-              />
-            </View>
-            <View style={styles.upcomingTitle}>
-              <Text style={styles.upcomigText}>What Do You Want to Train</Text>
-             
-            </View>
-            <View>
-            <FlatList
-                data={train}
-                renderItem={renderTrain}
-                keyExtractor={(item, index) => index?.toString()}
-              />
+            <View style={styles.primartView}>
+            <TextInputWithIcon
+            textInput={{
+              // onChangeText: text => { setName(text); setNameError(false) },
+              placeholder: 'fff',
+              // value: name,
+            }}
+            // error={nameError}
+          />
             </View>
           </View>
         </Animated.ScrollView>
@@ -124,11 +132,14 @@ const styles = StyleSheet.create({
     backgroundColor: color.TextGreen,
   },
   subcard: {
-    backgroundColor: color.TextGreen,
-    borderRadius: 15,
+    backgroundColor: color.LightGreen,
+    flexDirection:'row',
+    borderRadius: 10,
     paddingHorizontal: 25,
-    justifyContent: 'center',
+    paddingVertical:15,
+    justifyContent: 'space-between',
     alignItems: 'center',
+    marginVertical:10
   },
   blueCard: {
     backgroundColor:`rgba(66,215,66, 0.3)`,
@@ -162,11 +173,13 @@ const styles = StyleSheet.create({
   }),
   cardText: {
     color: color.TextPrimaryColor,
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight:'700'
   },
   cardSubText: {
-    color: color.White,
-    fontSize: 13,
+    color: color.Black,
+    fontSize: 18,
+
   },
   upcomingTitle:{
       marginHorizontal:25,
@@ -178,6 +191,10 @@ const styles = StyleSheet.create({
       color:color.Black,
       fontWeight:'800'
   },
+  primartView:{
+    marginHorizontal:40,
+    marginVertical:20
+  }
   
 });
 
@@ -203,15 +220,10 @@ const ITEMSET = [
 ]
 const ITEMS = [
   {
-    image:images.workout1,
-    catogory:'Fullbody Workout',
-    dateTime:'Today, 03:00pm',
-    status:true,
-  },
-  {
-    image:images.workout2,
-    catogory:'Upperbody Workout',
-    dateTime:'Today, 03:00pm',
-    status:false,
+    carbs: 7.5,
+    fat:11,
+    protein:28,
+    size:100,
+    sodium:0.073
   }
 ]

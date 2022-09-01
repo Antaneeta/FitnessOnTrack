@@ -1,11 +1,11 @@
-import {View, Text, StyleSheet, Dimensions, Button as Btn} from 'react-native';
-import React, {useEffect} from 'react';
+import { View, Text, StyleSheet, Dimensions, Button as Btn, ScrollView } from 'react-native';
+import React, { useEffect } from 'react';
 import * as Progress from 'react-native-progress';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as color from '../../Themes/colors';
 import Button from '../../components/common/Button';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import {
   LineChart,
@@ -15,12 +15,12 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
-import {hp, wp} from '../../utils/screenResponsiveFunctions';
+import { hp, wp } from '../../utils/screenResponsiveFunctions';
 import { useNavigation } from '@react-navigation/native';
 import { screens } from '../../constants';
 
-const DashBoard = () => {
-  const navigation =useNavigation()
+const DashBoard = props => {
+  const navigation = useNavigation()
 
   const user = useSelector(state => state.auth.user);
 
@@ -30,8 +30,12 @@ const DashBoard = () => {
       .then(() => console.log('User signed out!'))
       .catch(error => console.error(error));
   };
-  const showDrawer =() => {
+  const showDrawer = () => {
     navigation.openDrawer();
+  }
+
+  const checkNotification = () => {
+    props.navigation.navigate(screens.NOTIFICATION);
   }
 
   useEffect(() => {
@@ -54,39 +58,60 @@ const DashBoard = () => {
         </View>
         <Button
           iconName={'bell'}
-          iconSize={30}
+          iconSize={25}
           iconColor={color.TextPrimaryColor}
+          onPress={checkNotification}
         />
       </View>
-      <View style={styles.greenCard}>
-        <Text style={styles.cardMainText}>BMI (Body Mass Index)</Text>
-        <Text style={styles.cardSubText}>you have a normal weight</Text>
-        <PieChart
-          data={data}
-          width={wp(60)}
-          height={hp(20)}
-          chartConfig={chartConfig}
-          accessor={'population'}
-          backgroundColor={'transparent'}
-          paddingLeft={'15'}
+      <ScrollView>
+        <View style={styles.greenCard}>
+          <View style={{ borderRadius: 50, backgroundColor: `rgba(255, 255, 255, ${0.4})`, borderColor: `rgba(0, 0, 0, ${0.6})`, position: 'absolute', height: 70, width: 70, marginLeft: -25 }} />
+          <Text style={styles.cardMainText}>BMI (Body Mass Index)</Text>
+          <Text style={styles.cardSubText}>you have a normal weight</Text>
+          <ProgressChart
+            data={data}
+            width={wp(80)}
+            height={hp(20)}
+            strokeWidth={16}
+            radius={40}
+            chartConfig={chartConfig}
+            accessor={'population'}
+            backgroundColor={'transparent'}
+            hasLegend={false}
+          // paddingLeft={'-20'}
           // center={[0, 50]}
           // absolute
+          />
+          <View style={{ borderRadius: 150, backgroundColor: `rgba(255, 255, 255, ${0.28})`, borderColor: `rgba(0, 0, 0, ${0})`, position: 'absolute', height: 170, width: 170, justifyContent: 'flex-end', marginLeft: wp(60), marginTop: hp(15) }} />
+          <View style={{ borderRadius: 150, backgroundColor: `rgba(255, 255, 255, ${0.28})`, borderColor: `rgba(0, 0, 0, ${0.4})`, position: 'absolute', height: 15, width: 15, justifyContent: 'flex-end', marginLeft: wp(70), marginTop: hp(3) }} />
+          <View style={{ borderRadius: 150, backgroundColor: `rgba(255, 255, 255, ${0.28})`, borderColor: `rgba(0, 0, 0, ${0.4})`, position: 'absolute', height: 15, width: 15, justifyContent: 'flex-end', marginLeft: wp(10), marginTop: hp(20) }} />
+        </View>
+        <View style={styles.blueCard}>
+          <Text style={styles.cardText}>Today Target</Text>
+          <View style={styles.subcard}>
+            <Text style={styles.cardSubText}>Check</Text>
+          </View>
+        </View>
+
+        <ContributionGraph
+          values={commitsData}
+          endDate={new Date("2017-04-01")}
+          numDays={119}
+          width={wp(100)}
+          height={hp(25)}
+          chartConfig={chartConfigCon}
+          showMonthLabels={true}
         />
-      </View>
-      <View style={styles.blueCard}>
-        <Text style={styles.cardText}>Today Target</Text>
-        <View style={styles.subcard}>
-          <Text style={styles.cardSubText}>Check</Text>
+        <View style={[styles.blueCard,{height:120}]}>
+          <Text style={styles.cardText}>Target</Text>
+          <MaterialCommunityIcons name='cup-water' size={90}/>
+          <Text style={styles.cardText}>2 l</Text>
+          <View style={[styles.subcard,{marginLeft:25}]}>
+            <Text style={styles.cardSubText}>Drink</Text>
+          </View>
         </View>
-      </View>
-      <View style={{marginHorizontal: 25,flex:1}}>
-        <Text style={styles.name2}>Activity Status</Text>
-        <View style={styles.shadowContainer}>
-          <Progress.Bar progress={0.3} width={200} style={{flexDirection:'column'}} />
-        </View>
-      </View>
-      
-      <Btn title={'Sign Out'} onPress={onSignOut} />
+      </ScrollView>
+
     </View>
   );
 };
@@ -102,19 +127,21 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   subcard: {
-    backgroundColor: color.Gray2,
+    backgroundColor: color.purple,
     borderRadius: 15,
     paddingHorizontal: 25,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 100,
+    height: 35
   },
   blueCard: {
-    backgroundColor: color.LightBlue,
+    backgroundColor: `rgba(180,	192, 254, ${0.28})`,
     borderRadius: 18,
     marginHorizontal: 25,
-    marginVertical: 20,
+    marginVertical: 13,
     borderColor: color.LightBlue,
+    alignItems: 'center',
     height: 65,
     padding: 15,
     justifyContent: 'space-between',
@@ -148,9 +175,9 @@ const styles = StyleSheet.create({
   },
   topNav: {
     flexDirection: 'row',
-    marginVertical:25,
-    marginHorizontal:25,
-    alignItems:'center',
+    marginVertical: 25,
+    marginHorizontal: 25,
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   welcomeText: {
@@ -166,40 +193,84 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.00,
-    
+
     elevation: 12,
-    borderRadius:15,
-    borderColor:color.BackgroundColor,
-    padding:50,
+    borderRadius: 15,
+    borderColor: color.BackgroundColor,
+    padding: 50,
     transform: [{ rotate: "-90deg" }]
   },
-  
+
 });
 
 const chartConfig = {
-  backgroundGradientFrom: '#1E2923',
   backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: '#08130D',
-  backgroundGradientToOpacity: 0.5,
-  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+  backgroundGradientToOpacity: 0,
+  color: (opacity = 1) => `rgba(200, 145, 242, ${opacity})`,
+  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
   strokeWidth: 2, // optional, default 3
   barPercentage: 0.5,
   useShadowColorFromDataset: false, // optional
 };
 
-const data = [
-  {
-    name: 'Seoul',
-    population: 21500000,
-    color: '#FFF',
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  },
-  {
-    name: 'Toronto',
-    population: 2800000,
-    color: color.purple,
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  },
+const chartConfigCon = {
+  backgroundGradientFromOpacity: 0,
+  backgroundGradientToOpacity: 0,
+  color: (opacity = 0) => `rgba(200, 145, 242, ${opacity})`,
+  strokeWidth: 7, // optional, default 3
+  barPercentage: 0.1,
+  useShadowColorFromDataset: false, // optional
+};
+
+const data2 = {
+  labels: ["steps"], // optional
+  data: [0.8,]
+};
+// const data = [
+//   {
+//     name: 'Under Weight',
+//     population: 12.6,
+//     color: '#FFF',
+//     legendFontColor: '#7F7F7F',
+//     legendFontSize: 15,
+//   },
+//   {
+//     name: 'over Weight',
+//     population: 20.2,
+//     color: '#4579',
+//     legendFontColor: '#7F7F7F',
+//     legendFontSize: 15,
+//   },
+//   {
+//     name: 'Obese',
+//     population: 6.2,
+//     color: '#F00',
+//     legendFontColor: '#7F7F7F',
+//     legendFontSize: 15,
+//   },
+//   {
+//     name: 'Normal Weight',
+//     population: 62.2,
+//     color: color.purple,
+//     legendFontColor: '#7F7F7F',
+//     legendFontSize: 15,
+//   },
+const data = {
+  labels: ["Train", "calories"],
+  data: [0.4, 0.6]
+}
+
+
+const commitsData = [
+  { date: "2017-01-02", count: 1 },
+  { date: "2017-01-03", count: 2 },
+  { date: "2017-01-04", count: 3 },
+  { date: "2017-01-05", count: 4 },
+  { date: "2017-01-06", count: 5 },
+  { date: "2017-01-30", count: 2 },
+  { date: "2017-01-31", count: 3 },
+  { date: "2017-03-01", count: 2 },
+  { date: "2017-04-02", count: 4 },
+  { date: "2017-03-05", count: 2 },
+  { date: "2017-02-30", count: 4 }
 ];

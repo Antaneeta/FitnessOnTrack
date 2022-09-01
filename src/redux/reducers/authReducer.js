@@ -2,22 +2,21 @@ import authActionTypes from "../actions/authActions";
 
 const initialState = {
   user: null,
+  userProfile: null,
+  initialRoute: null,
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case authActionTypes.SET_USER:
-      return { ...state, user: action.payload };
+      return { ...state, user: action.payload.user, userProfile: action.payload.userProfile };
 
-    case authActionTypes.SIGN_IN:
-      return { ...state, user: action.payload };
+    case authActionTypes.SET_INITIAL_ROUTE:
+      return { ...state, initialRoute: action.payload };
 
-    case authActionTypes.SIGN_UP:
-      return { ...state, user: action.payload };
-
-    case authActionTypes.SIGN_OUT:
-      return { ...state, user: null };
-
+    case authActionTypes.SET_USER_PROFILE:
+      return { ...state, userProfile: action.payload };
+      
     default:
       return state;
   }

@@ -5,45 +5,63 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  ActivityIndicator
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import auth from '@react-native-firebase/auth';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
+import Toast from 'react-native-toast-message'
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
-import {Layout} from '../../../components';
-import {screens} from '../../../constants';
+import { Layout } from '../../../components';
+import { screens } from '../../../constants';
 import TextInputWithIcon from '../../../components/common/TextInputWithIcon';
 import * as Colors from '../../../Themes/colors';
 import * as images from '../../../assets/image';
 
-let {name} = {name: 'anta', age: 20};
+let { name } = { name: 'anta', age: 20 };
 const SignUp = props => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [isLoading, setIsLoading] = useState(true)
+
   const onSignUp = () => {
+    setIsLoading(true)
     auth()
       .createUserWithEmailAndPassword(
         email,
         password,
       )
       .then(() => {
-        console.log('User account created & signed in!');
+
+        Toast.show({
+          type: 'success',
+          text1: 'User Created Successfully',
+          text2: 'Login with new user 👋',
+        });
+
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
+          Toast.show({
+            type: 'error',
+            text1: 'That email address is already in use!'
+          })
         }
 
         if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
+          Toast.show({
+            type: 'error',
+            text1: 'That email address is invalid!'
+          })
         }
-
-        console.error(error);
       });
+    setIsLoading(false)
+
   };
 
   const onSignIn = () => {
@@ -51,89 +69,98 @@ const SignUp = props => {
   };
 
   return (
+
     <Layout>
-      <View style={styles.detailsContainer}>
-        <Text style={styles.primartText}>Hey there,</Text>
-        <Text style={styles.title}>Create an Account</Text>
-        <View style={styles.textInputContainer}>
-          <TextInputWithIcon
-            textInput={{
-              value: firstName,
-              onChangeText: text => setFirstName(text),
-              placeholder: 'First Name',
-              placeHolderTextColor: Colors.Gray2,
-            }}
-            iconColor={Colors.Gray2}
-            iconName={'user'}
-            iconSize={20}
-          />
-        </View>
-        <View style={styles.textInputContainer}>
-          <TextInputWithIcon
-            textInput={{
-              value: lastName,
-              onChangeText: text => setLastName(text),
-              placeholder: 'Last Name',
-              placeHolderTextColor: Colors.Gray2,
-            }}
-            iconColor={Colors.Gray2}
-            iconName={'user'}
-            iconSize={20}
-          />
-        </View>
-        <View style={styles.textInputContainer}>
-          <TextInputWithIcon
-            textInput={{
-              value: email,
-              onChangeText: text => setEmail(text),
-              placeholder: 'Email',
-              placeHolderTextColor: Colors.Gray2,
-            }}
-            iconColor={Colors.Gray2}
-            iconName={'mail'}
-            iconSize={20}
-          />
-        </View>
-        <View style={styles.textInputContainer}>
-          <TextInputWithIcon
-            textInput={{
-              value: password,
-              onChangeText: text => setPassword(text),
-              placeholder: 'Password',
-              placeHolderTextColor: Colors.Gray2,
-              secureTextEntry: true,
-            }}
-            iconColor={Colors.Gray2}
-            iconName={'lock'}
-            iconSize={20}
-          />
-        </View>
-        <Text style={styles.termCondition}>
-          By continuing you accept our Privacy Policy and Term of Use
-        </Text>
-      </View>
-      <View style={styles.detailsContainer}>
-        <TouchableOpacity onPress={onSignUp} style={styles.greenButton}>
-          <Text style={styles.titleButton}>Register</Text>
-        </TouchableOpacity>
-        <View />
-        <Text>Or</Text>
-        <View style={styles.row}>
-          <View style={styles.iconContainer}>
-            <Image source={images.google} />
+      {/* {isLoading ?
+        <ActivityIndicator>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 100 }}>
+            <ActivityIndicator size={40} color={Colors.TextGreen} />
           </View>
-          <View style={styles.iconContainer}>
-            <Image source={images.faceBook} />
+        </ActivityIndicator> : <> */}
+          <View style={styles.detailsContainer}>
+            <Text style={styles.primartText}>Hey there,</Text>
+            <Text style={styles.title}>Create an Account</Text>
+            <View style={styles.textInputContainer}>
+              <TextInputWithIcon
+                textInput={{
+                  value: firstName,
+                  onChangeText: text => setFirstName(text),
+                  placeholder: 'First Name',
+                  placeHolderTextColor: Colors.Gray2,
+                }}
+                iconColor={Colors.Gray2}
+                iconName={'user'}
+                iconSize={20}
+              />
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInputWithIcon
+                textInput={{
+                  value: lastName,
+                  onChangeText: text => setLastName(text),
+                  placeholder: 'Last Name',
+                  placeHolderTextColor: Colors.Gray2,
+                }}
+                iconColor={Colors.Gray2}
+                iconName={'user'}
+                iconSize={20}
+              />
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInputWithIcon
+                textInput={{
+                  value: email,
+                  onChangeText: text => setEmail(text),
+                  placeholder: 'Email',
+                  placeHolderTextColor: Colors.Gray2,
+                }}
+                iconColor={Colors.Gray2}
+                iconName={'mail'}
+                iconSize={20}
+              />
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInputWithIcon
+                textInput={{
+                  value: password,
+                  onChangeText: text => setPassword(text),
+                  placeholder: 'Password',
+                  placeHolderTextColor: Colors.Gray2,
+                  secureTextEntry: true,
+                }}
+                iconColor={Colors.Gray2}
+                iconName={'lock'}
+                iconSize={20}
+              />
+            </View>
+            <Text style={styles.termCondition}>
+              By continuing you accept our Privacy Policy and Term of Use
+            </Text>
           </View>
-        </View>
-        <View>{/* Icons */}</View>
-        <View style={styles.row}>
-          <Text>Already have an account?</Text>
-          <TouchableOpacity onPress={onSignIn}>
-            <Text> Login</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+          <View style={styles.detailsContainer}>
+            <TouchableOpacity onPress={onSignUp} style={styles.greenButton}>
+              <Text style={styles.titleButton}>Register</Text>
+            </TouchableOpacity>
+            <View />
+            <Text>Or</Text>
+            <View style={styles.row}>
+              <View style={styles.iconContainer}>
+                <Image source={images.google} />
+              </View>
+              <View style={styles.iconContainer}>
+                <Image source={images.faceBook} />
+              </View>
+            </View>
+            <View>{/* Icons */}</View>
+            <View style={styles.row}>
+              <Text>Already have an account?</Text>
+              <TouchableOpacity onPress={onSignIn}>
+                <Text> Login</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        {/* </>} */}
+
     </Layout>
   );
 };

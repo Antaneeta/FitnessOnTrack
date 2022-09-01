@@ -12,6 +12,8 @@ import React, {useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
+import { Toast } from 'react-native-toast-message';
 
 import {
   TextPrimaryColor,
@@ -38,7 +40,10 @@ const SignIn = props => {
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
+          Toast.show({
+            type: 'error',
+            text2: 'The email is already used',
+          });
         }
 
         if (error.code === 'auth/invalid-email') {
@@ -87,13 +92,14 @@ const SignIn = props => {
           iconSize={20}
         />
       </View>
-      <View>
+      <View style={styles.textSecound}>
         <Text style={styles.secoundText}>Forget your Password?</Text>
       </View>
 
-      <View style={styles.titleContainer}>
+      <View style={[styles.titleContainer,{marginTop:'40%'}]}>
         <TouchableOpacity style={styles.button} onPress={onSignIn}>
-          <Text>Login</Text>
+          <Entypo color={Colors.White} size={20} name={'login'}/>
+          <Text style={{fontWeight:'700', color:Colors.White, fontSize:18,marginHorizontal:15}}>Login</Text>
         </TouchableOpacity>
       </View>
 
@@ -108,8 +114,9 @@ const SignIn = props => {
           <Image source={images.faceBook} />
         </View>
       </View>
-      <TouchableOpacity onPress={onSignUp}>
-        <Text>Don't you have account?</Text>
+      <TouchableOpacity onPress={onSignUp} style={styles.secoundText}>
+        <Text style={{color:Colors.Black, fontWeight:'600',fontSize:14,marginRight:10}}>Don't you have account?</Text>
+        <Text>Register</Text>
       </TouchableOpacity>
     </View>
   );
@@ -119,6 +126,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingTop:60
   },
   separator: {
     borderBottomColor: TextPrimaryColor,
@@ -131,10 +139,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: TextGreen,
+    flexDirection:'row'
   },
   secoundText: {
     alignItems: 'center',
     marginVertical: 10,
+    fontSize:16,
+    color:Colors.Gray2,
+    fontWeight:'400',
+    flexDirection:'row',
+    justifyContent:'center',
+    textDecorationLine: 'underline'
   },
   text: {
     borderBottomColor: TextSecoundaryColor,
@@ -143,7 +158,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 25,
+    marginVertical: 10,
   },
   iconContainers: {
     flexDirection: 'row',
@@ -155,7 +170,7 @@ const styles = StyleSheet.create({
     backgroundColor: borderColor,
     height: 50,
     marginHorizontal: 25,
-    marginVertical: 20,
+    marginVertical: 8,
   },
   subTitle: {
     color: TextPrimaryColor,
@@ -177,5 +192,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     margin: 10,
   },
+  textSecound:{
+    alignItems:'center'
+
+  }
 });
 export default SignIn;
