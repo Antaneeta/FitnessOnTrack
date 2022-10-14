@@ -2,11 +2,14 @@ import { View, Text, StyleSheet, Button, TouchableOpacity, FlatList, Image, Scro
 import React, { useState, useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 import { Layout, Header, AddIcon, Catogory, Shedule, GreenButton } from '../../../components';
 import * as color from '../../../Themes/colors';
 import * as images from '../../../assets/image'
 import { screens } from '../../../constants';
+import { hp } from '../../../utils/screenResponsiveFunctions';
+import { useSelector } from 'react-redux';
 
 const CardItem = ({ item }) => {
   const navigation = useNavigation()
@@ -23,11 +26,9 @@ const CardItem = ({ item }) => {
   }, []);
 
   return (
-    <TouchableOpacity  style={[styles.cardContainer, { backgroundColor: color.BorderColor }]}>
+    <TouchableOpacity style={[styles.cardContainer, { backgroundColor: color.BorderColor }]}>
       <Image source={item?.image} style={{ width: 90, height: 70 }} />
       <Text style={styles.titleBtn}>{item?.name}</Text>
-      <Text style={styles.titleStyle2}>{item?.primaryName}</Text>
-      <Text style={styles.titleStyle2}>{item?.time}</Text>
       <TouchableOpacity>
 
       </TouchableOpacity>
@@ -37,6 +38,7 @@ const CardItem = ({ item }) => {
 const CardWorkotItem = ({ item }) => {
   const navigation = useNavigation()
 
+  console.log({ item })
   const onclick = () => {
     // navigation.navigate(screens.WORKOUT_DETAIL, {
     //     name: item?.name,
@@ -49,24 +51,34 @@ const CardWorkotItem = ({ item }) => {
   }, []);
 
   return (
-    <TouchableOpacity onPress={onclick} style={[styles.cardWorkoutContainer]}>
-      <Image source={item?.image} style={{ width: 60, height: 60 }} />
-      <Text style={styles.titleBtn}>{item?.name}</Text>
-      <Text style={styles.titleStyle2}>{item?.primaryName}</Text>
-      <Text style={styles.titleStyle2}>{item?.time}</Text>
+    <TouchableOpacity onPress={onclick} style={[styles.cardWorkoutContainer, {}]}>
+      <Image source={{ uri: item?.image }} style={{ width: 60, height: 60, marginRight: 10 }} />
+      <View>
+        <Text numberOfLines={1} style={styles.titleBtn}>{item?.name}</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Text numberOfLines={1} style={[styles.titleStyle2, { marginRight: 10}]}>{item?.muscle}</Text>
+          <Text numberOfLines={1} style={styles.titleStyle2}>{item?.category}</Text>
+        </View>
+      </View>
+
       <TouchableOpacity>
 
       </TouchableOpacity>
     </TouchableOpacity>
   );
 }
+
+
 const ManageExercices = props => {
   const [user, setUser] = useState();
-  // const title =props.route.params.title;
-
+  // const [empty, setEmpty] =useState([]);
+  const title = props.route.params?.title;
+  console.log(title)
   const onBackClick = () => {
     props.navigation.navigate(screens.WORKOUT_ROUITINE)
   }
+
+  const empty = useSelector(state => state.auth.workoutRoutines)
 
   const onRightPress = () => {
     props.navigation.navigate(screens.ADD_EXERCISES)
@@ -80,59 +92,64 @@ const ManageExercices = props => {
   )
   return (
     <Layout>
-      <View>
+      <View style={{ flex: 1 }}>
         <Header
           onPress={onBackClick}
-          title={''}
+          title={title}
           onRightPress={onRightPress}
           titleStyle={styles.titleStyle1}
           rightIcon={() => <AddIcon />}
         />
-        <ScrollView>
-          <Shedule title={'5/27, 09:00 AM'} />
+        <Shedule />
 
+        {empty.length === 0 ? (
+          <View style={{ alignItems: 'center', justifyContent: 'center', height: hp(50), paddingHorizontal: 50 }}>
+            <AntDesign name={'file1'} size={80} color={color.TextSecoundaryColor} />
+            <Text style={{ fontSize: 17, textAlign: 'center', marginTop: 20, color: color.TextSecoundaryColor }}> 📪 You are not added Any workout to this routine. Please click on + button to find Workouts</Text>
+          </View>
+        ) :
+          (
+            <View style={{ flex: 1 }}>
+              <View style={styles.topContainer}>
+                <Text style={styles.titleSubStyle}>You’ll Need</Text>
+                <Text>5 items</Text>
+              </View>
+              <View style={{ marginLeft: 25 }}>
+                <FlatList
+                  horizontal={true}
+                  data={DATA}
+                  renderItem={renderItem}
+                  keyExtractor={(item, index) => index}
+                />
 
-          <View style={styles.topContainer}>
-            <Text style={styles.titleSubStyle}>You’ll Need</Text>
-            <Text>5 items</Text>
-          </View>
-          <View style={{ marginLeft: 25 }}>
-            <FlatList
-              horizontal={true}
-              data={DATA}
-              renderItem={renderItem}
-              keyExtractor={(item, index) => index}
-            />
-
-          </View>
-          <View style={styles.topContainer}>
-            <Text style={styles.titleSubStyle}>Exercises</Text>
-            <Text>5 items</Text>
-          </View>
-          <View>
-            <FlatList
-              horizontal={false}
-              data={DATA}
-              renderItem={renderWorkoutItem}
-              keyExtractor={(item, index) => index}
-            />
-
-          </View>
-          
-        </ScrollView>
+              </View>
+              <View style={styles.topContainer}>
+                <Text style={styles.titleSubStyle}>Exercises</Text>
+                <Text style={{ color: '#000' }}>2 items</Text>
+              </View>
+              <FlatList
+                flex={1}
+                horizontal={false}
+                data={empty}
+                renderItem={renderWorkoutItem}
+                // renderItem={() => <View><Text style={{ color: 'red'}}>hhh</Text></View>}
+                keyExtractor={(item, index) => index}
+                // contentContainerStyle={{ backgroundColor: 'blue' }}
+              />
+            </View>
+          )}
         <View
-            style={{
-              flex: 1,
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              zIndex: 1,
-              marginVertical: 80
-            }}>
+          style={{
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            zIndex: 1,
+            marginBottom: 40
+          }}>
 
-            <GreenButton title={'Start'} titleStyle={styles.titleStyle} />
-          </View>
+          <GreenButton title={'Start'} titleStyle={styles.titleStyle} />
+        </View>
       </View>
-    </Layout >
+    </Layout>
   );
 };
 
@@ -167,8 +184,8 @@ const styles = StyleSheet.create({
     marginVertical: 30
   },
   titleBtn: {
-    fontSize: 16,
-    color: color.Black,
+    fontSize: 17,
+    color: color.DarkPurple,
     fontWeight: '600'
   },
 
@@ -219,7 +236,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     padding: 10,
     borderColor: color.primaryPurple,
-    height: 180,
+    height: 150,
     width: 180
   },
   cardWorkoutContainer: {
@@ -229,7 +246,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'row',
     backgroundColor: color.White,
-    justifyContent:'space-between'
+    // justifyContent: 'space-between',
   },
   singleCard: {
     justifyContent: 'space-between',
@@ -246,7 +263,7 @@ const styles = StyleSheet.create({
 
 const DATA = [
   {
-    name: 'Honey Pancake',
+    name: 'dumbbell',
     primaryName: 'Easy',
     id: '1',
     time: '7 am',
@@ -254,37 +271,13 @@ const DATA = [
     image: images.Eq1
   },
   {
-    name: 'kkk',
+    name: 'Barbell',
     primaryName: 'hard',
     id: '2',
     time: '7 am',
-    day: 'Today',    
+    day: 'Today',
     image: images.Eq2
 
   },
-  {
-    name: 'kkk',
-    id: '3',
-    time: '7 am',
-    day: 'Today',
-    image: images.Eq3
-
-  }, {
-    name: 'saman',
-    id: '4',
-    time: '7 am',
-    day: 'Today'
-  },
-  {
-    name: 'kkk',
-    id: '5',
-    time: '7 am',
-    day: 'Today'
-  },
-  {
-    name: 'kkk',
-    id: '6',
-    time: '7 am',
-    day: 'Today'
-  },
+  
 ]

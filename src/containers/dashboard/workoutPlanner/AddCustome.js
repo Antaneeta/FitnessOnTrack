@@ -16,9 +16,11 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import Toast from 'react-native-toast-message';
 import RNPickerSelect from 'react-native-picker-select';
+import { useNavigation } from '@react-navigation/native';
 
 
 import * as permissions from '../../../utils/functions/permissions';
+import { screens } from '../../../constants';
 import {
   GreenButton,
   Header,
@@ -28,20 +30,23 @@ import {
 } from '../../../components';
 import * as colors from '../../../Themes/colors';
 import { set } from 'react-native-reanimated';
+import Picker from '../../../components/common/Picker';
 
 const AddCustome = () => {
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState(false);
-  const [equipment, setEquipments] = useState(null);
+  const [equipment, setEquipments] = useState('');
   const [equipmentError, setEquipmentsError] = useState();
-  const [muscle, setMuscle] = useState(null);
+  const [muscle, setMuscle] = useState('');
   const [muscleError, setMuscleError] = useState(null);
-  const [category, setCategory] = useState(null);
+  const [category, setCategory] = useState('Full Body');
   const [des, setDes] = useState(null);
   const [sets, setSets] = useState('');
   const [reps, setReps] = useState('');
   const [weight, setWeight] = useState('');
   const [image, setImage] = useState(null);
+
+  const navigation = useNavigation()
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -58,7 +63,10 @@ const AddCustome = () => {
     setDes('')
   }
 
-
+  const onBackClick = () => {
+    navigation.navigate(screens.WORKOUT_ROUITINE)
+  }
+  
   const chooseFromLibrary = async () => {
     function split(str, index) {
       const result = [str.slice(0, index), str.slice(index)];
@@ -126,8 +134,7 @@ const AddCustome = () => {
       category === '' ||
       image === null ||
       sets.trim() === "" ||
-      reps.trim() === "" ||
-      weight.trim() === ""
+      reps.trim() === "" 
     ) {
       error = true
       setNameError(name.trim() === '')
@@ -159,12 +166,18 @@ const AddCustome = () => {
           weight: parseInt(weight),
           des,
         };
+        console.log(workout)
         firestore()
           .collection('Workout')
           .add(workout)
           .then(result => {
             setToDefault()
             console.log(result);
+            Toast.show({
+              type: 'success',
+              text1: 'Workout added to your workout collection successfully 😊',
+            });
+            navigation.navigate(screens.ADD_EXERCISES)
           })
           .catch(error => {
             console.error(error);
@@ -179,7 +192,8 @@ const AddCustome = () => {
 
   return (
     <Layout>
-      <Header title={'Create Custom Workout'} titleStyle={styles.titleStyle1} />
+          
+      <Header title={'Create Custom Workout'} titleStyle={styles.titleStyle1} onPress={onBackClick}/>
       <ScrollView>
         <View style={styles.primaryView}>
           <Text style={styles.primaryTitle}>Lets Add New Workout</Text>
@@ -225,20 +239,10 @@ const AddCustome = () => {
           // }}
        /> */}
           </View>
-          <TextInputWithIcon
-            textInput={{
-              onChangeText: setMuscle,
-              placeholder: 'Muscle',
-              value: muscle,
-            }}
-          />
-          <TextInputWithIcon
-            textInput={{
-              onChangeText: setEquipments,
-              placeholder: 'Equipments',
-              value: equipment,
-            }}
-          />
+          <Picker placeholder= {'Select body part'}items={[{ label: 'legs', value: 'legs' }, { label: 'Arms', value: 'arms'}, { label: 'Chest', value: 'chest'}, { label: 'Shoulders', value: 'Shoulders'}, { label: 'abdominals', value: 'abdomimals'}, { label: 'back', value: 'back'}]} onValueChange={setMuscle}/>
+
+          <Picker placeholder={'Select equipment'} items={[{ label: 'No Equipment', value: 'No Equipment' },{ label: 'Dumbbells', value: 'Dumbbells' }, { label: 'Barbells', value: 'Barbells'}, { label: 'Body Bars', value: 'BodyBars'}, { label: 'Kettlebells', value: 'Kettlebells'}, { label: 'Resistance Bands', value: 'Resistance Bands'}, { label: 'TRX', value: 'TRX'}]} onValueChange={setEquipments}/>
+
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <TextInputSmall
               textInput={{
@@ -263,19 +267,13 @@ const AddCustome = () => {
             />
           </View>
 
-          <TextInputWithIcon
-            textInput={{
-              onChangeText: setCategory,
-              placeholder: 'category',
-              value: category,
-            }}
-          />
+          <Picker placeholder={'Select Workout category'} items={[{ label: 'Aerobic exercise', value: 'Aerobic' }, { label: 'Strength training', value: 'Strength'}, { label: 'Stretching', value: 'Stretching'}, { label: 'Balance exercises', value: 'balancing'}]} onValueChange={setCategory}/>
           
           <TextInputWithIcon
             textInput={{
-              onChangeText: text => { setName(text); setNameError(false) },
+              onChangeText: text => { setDes(text); },
               placeholder: 'Add description',
-              value: name,
+              value: des,
             }}
             error={nameError}
           />

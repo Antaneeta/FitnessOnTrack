@@ -31,7 +31,7 @@ const DrawerNavigation = () => {
       {/* <Drawer.Screen name={screens.PROFILE} component={Profile}/> */}
       <Drawer.Screen name={screens.NOTIFICATION} component ={Notification}/>
       <Drawer.Screen name={screens.MEALPLANNER} component ={MealPlanner}/>
-      {/* <Drawer.Screen name={screens.ADDMEAL} component ={AddMeal}/> */}
+      <Drawer.Screen name={screens.ADDMEAL} component ={AddMeal}/>
 
     </Drawer.Navigator>
   );

@@ -56,7 +56,7 @@ const AddMeal = () => {
         return (
             <>
                 {/* <SearchFilter value={search} onChangeText={setSearch} onSearch={onSearch} /> */}
-                <TouchableOpacity onPress={() => setSearch(true)} style={{ marginHorizontal: 25, marginVertical: 40 }}>
+                <TouchableOpacity onPress={() => setSearch(true)} style={{ marginHorizontal: 25, marginVertical: 0 }}>
                     <SearchableDropdown
                         multi={true}
                         selectedItems={selectedItems}
@@ -110,7 +110,7 @@ const AddMeal = () => {
                 </TouchableOpacity>
 
                 <View style={styles.topContainer}>
-                    <Text style={styles.titleStyle}>Recent Diet</Text>
+                    <Text style={styles.titleStyle}>Cook Book Recipe</Text>
                 </View>
                 <View style={{ marginLeft: 25 }}>
                     <FlatList
@@ -127,7 +127,7 @@ const AddMeal = () => {
         <Layout>
             {
                 !search ?
-                    (<Header title={'Breakfask'} />) : (<></>)
+                    (<Header title={'Add meals'} />) : (<></>)
             }
 
             <FlatList
@@ -137,8 +137,17 @@ const AddMeal = () => {
                 renderItem={({ item, index }) => {
                     return (
                         <TouchableOpacity style={[styles.containercard]}>
-                            <Text style={{ height: 50, marginBottom: 10, color: colors.DarkPurple }} key={item.docId}>{item.docId}</Text>
-                            {/* <Text style={styles.titleBtn}>{item?.name}</Text> */}
+                            <View style={{flexDirection:'row'}}>
+                                <Text style={{ color: colors.DarkPurple, fontSize:16 }} key={item.docId}>{item.docId} </Text>
+                                <Text style={{ color: colors.Gray2,fontSize:16 }}>{item.size} g</Text>
+                            </View>
+                            <Text></Text>
+                            <Text style={styles.titleBtn}> Fat: {item?.fat}</Text>
+                            <Text style={styles.titleBtn}> Protein: {item?.protein}</Text>
+                            <Text style={styles.titleBtn}> Carbs: {item?.carbs}</Text>
+                            <Text style={styles.titleBtn}> Sodium: {item?.sodium}</Text>
+
+
                             <Text>{item?.time}</Text>
                         </TouchableOpacity>
                     )
@@ -188,9 +197,6 @@ const CardItem = ({ item, color }) => {
             <Text style={styles.titleBtn}>{item?.name}</Text>
             <Text>{item?.primaryName}</Text>
             <Text>{item?.time}</Text>
-            <TouchableOpacity>
-
-            </TouchableOpacity>
         </TouchableOpacity>
     );
 }
@@ -211,7 +217,7 @@ const CardfoodItem = ({ item }) => {
     return (
         <TouchableOpacity onPress={onclick} style={[styles.container]}>
             <Text style={styles.titleBtn}>{item?.name}</Text>
-            <Text>{item?.time}</Text>
+            <Text style={{ color: '#000', fontSize: 16 }}>fat: </Text>
         </TouchableOpacity>
     );
 }
@@ -219,98 +225,70 @@ const CardfoodItem = ({ item }) => {
 const DATA = [
     {
         name: 'Honey Pancake',
-        primaryName: 'Easy',
+        primaryName: '130 calories',
         id: '1',
-        time: '7 am',
+        time: 'per serving',
         day: 'Today',
         image: images.PanCake
     },
     {
-        name: 'kkk',
-        primaryName: 'hard',
+        name: 'Protein Salad',
+        primaryName: '550 calories',
         id: '2',
-        time: '7 am',
+        time: 'high protein',
         day: 'Today',
         image: images.VegetablesSalad
     },
     {
-        name: 'kkk',
+        name: 'low calory Pizza',
         id: '3',
-        time: '7 am',
-        day: 'Today'
+        primaryName: '540 calories',
+        time: 'meat',
+        image: images.pizza
     }, {
-        name: 'saman',
+        name: 'salmon',
         id: '4',
-        time: '7 am',
-        day: 'Today'
+        primaryName: '208 calories',
+        time: 'per 100g',
+        image: images.salmon
     },
-    {
-        name: 'kkk',
-        id: '5',
-        time: '7 am',
-        day: 'Today'
-    },
-    {
-        name: 'kkk',
-        id: '6',
-        time: '7 am',
-        day: 'Today'
-    }, {
-        name: 'saman',
-        id: '7',
-        time: '7 am',
-        day: 'Today'
-    },
-    {
-        name: 'kkk',
-        id: '8',
-        time: '7 am',
-        day: 'Today'
-    },
-    {
-        name: 'kkk',
-        id: '9',
-        time: '7 am',
-        day: 'Today'
-    },
+
 ]
 
 
 const styles = StyleSheet.create({
     containercard: {
-    height: 100,
-    alignItems:'center',
-    justifyContent:'space-between',
-    borderRadius: 20,
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    shadowColor: colors.LightBlue,
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 10.32,
-    elevation: 20,
-    marginVertical: 10,
-    marginHorizontal: 35,
-    padding: 10,
-    borderColor: colors.LightBlue
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderRadius: 20,
+        backgroundColor: '#EEE',
+        shadowColor: colors.LightBlue,
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 10.32,
+        elevation: 20,
+        marginVertical: 10,
+        marginHorizontal: 35,
+        padding: 10,
+        borderColor: colors.LightBlue
     },
     titleStyle1: {
         color: colors.Black,
     },
     titleStyle: {
         color: colors.Black,
-        fontSize: 18,
         fontSize: 20,
-        fontWeight: '600'
+        fontSize: 20,
+        fontWeight: '800'
     },
     topContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginHorizontal: 30,
-        marginVertical: 30
+        marginVertical: 0
     },
     titleBtn: {
         fontSize: 16,
@@ -365,7 +343,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         padding: 10,
         borderColor: colors.primaryPurple,
-        height: 250,
+        height: 180,
         width: 200
     },
     singleCard: {

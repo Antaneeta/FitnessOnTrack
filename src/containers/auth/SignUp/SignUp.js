@@ -43,7 +43,7 @@ const SignUp = props => {
           text1: 'User Created Successfully',
           text2: 'Login with new user 👋',
         });
-
+props.navigation.navigate(screens.SIGN_IN);
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -51,6 +51,7 @@ const SignUp = props => {
             type: 'error',
             text1: 'That email address is already in use!'
           })
+          props.navigation.navigate(screens.SIGN_IN);
         }
 
         if (error.code === 'auth/invalid-email') {

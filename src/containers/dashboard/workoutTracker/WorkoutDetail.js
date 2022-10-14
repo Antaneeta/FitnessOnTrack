@@ -56,40 +56,53 @@ const WorkoutDetail = () => {
               paddingVertical:20
             }}>
             <View style={styles.primartView}>
-              <Text style={styles.cardText}>Blue Bary Pan Cake</Text>
+              <Text style={styles.cardText}>oat bran pancake - 1 large pancake (7")</Text>
             </View>
             <View style={styles.primartView}>
-              <Text style={[styles.cardText,{color:colors.DarkPurple}]}>Nutrition</Text>
+              <Text style={[styles.cardText,{color:colors.DarkPurple}]}>Nutrition facts</Text>
               <View style={styles.subcard}>
                 <Image source={images.kalIcon} style={{height:25,width:25}}/>
-                <Text>56cal</Text>
-                <Text style={styles.cardSubText}>carbs</Text>
+                <Text>Calories 159</Text>
+                <Text style={styles.cardSubText}>Total calories</Text>
               </View>
               <View style={styles.subcard}>
                 <Image source={images.FatIcon} style={{height:25,width:25}}/>
-                <Text>56cal</Text>
-                <Text style={styles.cardSubText}>carbs</Text>
+                <Text>7.4g</Text>
+                <Text style={styles.cardSubText}>Total Fat</Text>
               </View>
               <View style={styles.subcard}>
                 <Image source={images.ProteinIcon} style={{height:25,width:25}}/>
-                <Text>56cal</Text>
-                <Text style={styles.cardSubText}>carbs</Text>
+                <Text>4.9 grams</Text>
+                <Text style={styles.cardSubText}>Protein</Text>
               </View>
               <View style={styles.subcard}>
                 <Image source={images.CarboIcon} style={{height:25,width:25}}/>
-                <Text>56cal</Text>
-                <Text style={styles.cardSubText}>carbs</Text>
+                <Text>18 grams</Text>
+                <Text style={styles.cardSubText}>Carbohydrates</Text>
               </View>
             </View>
             <View style={styles.primartView}>
               <Text style={styles.upcomigText}>Description</Text>
-              <Text>gfdygfuyhvbdusvbsudvbwdbvwiuvbwuvwyvcwyvciuyvciuwvycu</Text>
+              <Text>We have some great news for you – pancakes can help you lose weight! If you use whole, natural ingredients (and hold the syrup), you can make pancakes that are great for weight loss. The key is to use whole-grain flour instead of refined flour and to avoid refined sugar</Text>
+            </View>
+            <View style={styles.primartView}>
+              <Text style={styles.upcomigText}>Nutritionix sub-recipe for 1 large pancake (7"):</Text>
+              <Text>{"Serving\t\t\t\t\t\t\t\t\t\tIngredient	\t\t\t \tCalories\n" +
+                      "43.37 grams\t\t\t\t\tmilk\t\t\t\t\t\t\t\t\t\t\t\t\t22\n" +
+                      "10.75 grams\t\t\t\t\trolled\t\t\t\t\t\t\t\t\t\t	41\n" +
+                      "8.85 grams	\t\t\t\t\tegg\t\t\t\t\t\t\t\t\t\t\t\t	13\n" +
+                      "4.96 grams	\t\t\t\t\toil\t\t\t\t\t\t\t\t\t\t\t\t\t	44\n" +
+                      "8.3 grams	\t\t\t\t\t\tflour\t\t\t\t\t\t\t\t\t\t\t	30\n" +
+                      "2.21 grams	\t\t\t\t\tsugar\t\t\t\t\t\t\t\t\t\t\t	9\n" +
+                      "1.02 grams	\t\t\t\t\tbaking powder \t\t\t	1\n" +
+                      "0.54 gram	\t\t\t\t\t\tsalt\t\t\t\t\t\t\t\t\t\t\t\t\t	0"}
+              </Text>
             </View>
             <View style={styles.primartView}>
             <TextInputWithIcon
             textInput={{
               // onChangeText: text => { setName(text); setNameError(false) },
-              placeholder: 'fff',
+              placeholder: 'grams ',
               // value: name,
             }}
             // error={nameError}

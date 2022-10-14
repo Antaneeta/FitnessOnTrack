@@ -16,9 +16,11 @@ import Toggle from "./common/Toggle"
 import GreenBtn from "./common/GreenBtn"
 import TextButton from "./common/TextButton"
 import Label from "./common/Label"
+import ActivityIndicatorNew from "./common/ActivityIndicatorNew"
 
 export {
     Layout,
+    ActivityIndicatorNew,
     Button,
     Label,
     TextInputWithIcon,

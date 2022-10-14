@@ -59,18 +59,18 @@ const WorkoutRouitine = props => {
     props.navigation.navigate(screens.addWorkout);
   };
 
-  const onPress = () => {
+  const onPress = (item) => {
     props.navigation.navigate(screens.MANAGE_EXERCICES, {
       prevScreen: prevScreen,
       initial: 'initial',
-      title: props.route.params?.title
+      title: item?.name
     });
 
   };
 
   const renderItem = ({ item, index }) => {
     const data = item._data
-    return <Catogory title={data?.name} titleStyle={styles.titleStyle2} onPress={onPress} />;
+    return <Catogory title={data?.name} titleStyle={styles.titleStyle2} onPress={ () => onPress(data)} />;
   };
 
   const onBackPress = () => {

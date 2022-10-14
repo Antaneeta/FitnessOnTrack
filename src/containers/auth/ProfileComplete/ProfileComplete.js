@@ -8,11 +8,14 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-toast-message';
 import storage from '@react-native-firebase/storage';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
 import { screens } from '../../../constants';
 import { Layout, PickerButton } from '../../../components';
@@ -31,9 +34,11 @@ const ProfileComplete = props => {
   const [dob, setDOB] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
-
+  const [date, setDate] =useState(new Date())
+  const [showDate, setShowDate] = useState(false)
   const [isLoading, setIsLoading] = useState();
-
+  const [measuringUnit, setMeasuringUnit] =useState('kg')
+  const [measureHeight, setMeasureHeight] =useState('cm')
   const setToDefault = () => {
     setGender('');
     setDOB('');
@@ -62,7 +67,7 @@ const ProfileComplete = props => {
             text1: 'User Profile Data successfully added '
           });
           console.log(result);
-          props.navigation.navigate(screens.HOME);
+          navigation.navigate(screens.HOME);
         })
         .then(snapshot => {
           const profile = {
@@ -109,23 +114,26 @@ const ProfileComplete = props => {
 
           />
         </View>
-        <View style={styles.textBox}>
-          <TextInputWithIcon
-            iconColor={Colors.TextSecoundaryColor}
-            iconName={'calendar'}
-            iconSize={20}
-            secureTextEntry={false}
-            textInput={{
-              placeholder: 'Date of Birth',
-              value:dob,
-              onChangeText: text => setDOB(text),
-            }}
-          />
+        <View style={[styles.textBox,]}>
+        <View style={{backgroundColor: '#F7F8F8',flex:1,paddingVertical:5, height:46, borderRadius:8, flexDirection:'row'}}>
+        <TouchableOpacity onPress={ () => setShowDate(true)}>
+          <AntDesign name='calendar' size={24} style={{paddingLeft:16}} color={Colors.TextSecoundaryColor}/>
+        </TouchableOpacity>
+        { showDate && <DateTimePicker mode="date" value={new Date()} onChange={(event, date) => {
+          setShowDate(false)
+          if (event.type === 'set') {
+            setDate(date)
+          }
+        }}/>}
+          <Text style={{fontSize:15,marginLeft:25, color:'#404040'}} onChangeText={setDate}>{moment(date).format("YYYY-MM-DD")}</Text>
+        </View>
+        
         </View>
         <View style={styles.textBox}>
           <TextInputWithIcon
             mainViewStyles={{
-              width: '70%'
+              flex: 1,
+              marginRight: 5
             }}
             iconColor={Colors.TextSecoundaryColor}
             iconName={'arrow-up'}
@@ -137,7 +145,10 @@ const ProfileComplete = props => {
               onChangeText: text => setWeight(text),
             }}
           />
-          <PickerButton />
+          <View style={{ flex: 1, marginLeft: 5 }}>
+          <PickerButton onValueChange={setMeasuringUnit} items={[{ label: 'kg (kilo grams)', value: 'kg' }, { label: 'lb (Pounds)', value: 'lb'}]}/>
+          </View>
+          
         </View>
         <View style={styles.textBox}>
           <TextInputWithIcon
@@ -151,10 +162,13 @@ const ProfileComplete = props => {
               onChangeText: text => setHeight(text),
             }}
             mainViewStyles={{
-              width: '70%'
+              flex: 1,
+              marginRight:5
             }}
           />
-
+          <View style={{ flex: 1, marginLeft: 5 }}>
+            <PickerButton items={[{ label: 'cm (centimeters)', value: 'cm' }, { label: 'feet', value: 'feet'}]} onChange={setMeasureHeight}/>
+          </View>
         </View>
 
         <TouchableOpacity onPress={onSuccess} style={styles.greenButton}>

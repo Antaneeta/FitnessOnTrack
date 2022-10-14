@@ -12,16 +12,24 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 import * as color from '../../Themes/colors';
 import LinearGradient from 'react-native-linear-gradient';
+import RNPickerSelect from 'react-native-picker-select';
+
 
 const PickerButton = props => {
   
 
+
   return (
-    <TouchableOpacity>
       <LinearGradient colors={['#C58BF2', `#EEA4CE`]} style={styles.container}>
-        
+      <RNPickerSelect
+        value={props.value}
+        placeholder={{}}
+        onValueChange={props.onValueChange}
+        items={props.items}
+        style={{
+          padding: 5,
+        }} />
       </LinearGradient>
-    </TouchableOpacity>
   );
 };
 
@@ -37,11 +45,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
-    
     alignItems: 'center',
-    padding: 10,
     borderRadius: 17,
-    width:50,
+    width: '100%',
     height:50
   },
   title: {

@@ -7,19 +7,24 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import React, { useRef,useEffect,useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Feather from 'react-native-vector-icons/Feather';
-import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
 import * as color from '../../Themes/colors';
 import LinearGradient from 'react-native-linear-gradient';
 
 const Schedule = props => {
-  const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('date');
   const [text, setText] = useState('')
+  const [date, setDate] = useState(new Date())
+  const [showDate, setShowDate] = useState(false)
+  const [time, setTime] = useState(new Date())
+  const [showTime, setShowTime] = useState(false)
+  const [isLoading, setIsLoading] = useState();
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -33,7 +38,7 @@ const Schedule = props => {
 
   let tempDate = new Date();
 
-  
+
   const LeftIcon = props?.leftIcon
     ? props.leftIcon
     : () => <Feather name="chevron-left" size={30} color={color.Black} />;
@@ -44,20 +49,28 @@ const Schedule = props => {
   return (
     <TouchableOpacity style={styles.container}>
       <LinearGradient colors={[color.White, `rgba(66,215,66, 0.15)`]} style={styles.container}>
-        <TouchableOpacity>
-          <Feather name="calendar" size={25} color={color.Gray2} />
-          {/* {show && (
-            <DateTimePicker
-            mode={mode}
-            value={date}+
-            is24Hour={true}
-            display="default"
-            onChange={onChange}/>
-          )} */}
-          
+        <TouchableOpacity onPress={() => setShowDate(true)}>
+          <AntDesign name='calendar' size={24} style={{ paddingLeft: 16 }} color={color.TextSecoundaryColor} />
         </TouchableOpacity>
-        <Text style={styles.title}>Schedule </Text>
-        {props?.title ? <Text style={[styles.title, props.titleStyle]}>{props?.title}</Text> : <></>}
+        {showDate && <DateTimePicker mode="date" value={new Date()} onChange={(event, date) => {
+          setShowDate(false)
+          if (event.type === 'set') {
+            setDate(date)
+          }
+        }} />}
+        <Text style={[styles.title, props.titleStyle]} onChangeText={setDate}>{moment(date).format("YYYY-MM-DD")} </Text>
+
+        <TouchableOpacity onPress={() => setShowTime(true)}>
+          <AntDesign name='clockcircleo' size={24} style={{ paddingLeft: 16 }} color={color.TextSecoundaryColor} />
+        </TouchableOpacity>
+        <Text style={{ color: color.Gray2 }}>{moment(time).format('hh:mm:ss')}</Text>
+        {showTime && <DateTimePicker mode="time" value={new Date()} onChange={(event, newTime) => {
+          console.log({event, newTime}, moment(newTime).format('hh:mm:ss'))
+          setShowTime(false)
+          if (event.type === 'set') {
+            setTime(newTime)
+          }
+        }} />}
         <TouchableOpacity>
           <RightIcon />
         </TouchableOpacity>

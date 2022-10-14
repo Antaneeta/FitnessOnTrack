@@ -17,25 +17,19 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as screen from '../../../containers';
 import { screens } from '../../../constants';
 import { ActivityIndicator } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 const CardItem = ({ item }) => {
   const currentScreen =screens.ADD_EXERCISES;
   const navigation = useNavigation()
-  const onclick = () => {
-    navigation.navigate(screens.EXERCISE, {
-      name:item?.name,
-      muscle:item?.muscle,
-      equipment:item?.equipment,
-      category:item?.category,
-      // set:item?.sets,
-      // rep:item?.reps,
-      desc:item?.desc,
-      currentScreen:currentScreen
-    })
-  }
+
 
   const [imageUrl, setImageUrl] = useState(null);
+
+  const onclick = () => {
+    navigation.navigate(screens.EXERCISE, { ...item, image: imageUrl })
+  }
 
   useEffect(() => {
     const imageRef = storage().ref('/' + item?.image);
@@ -96,9 +90,13 @@ const AddExercises = props => {
       });
   };
 
-  useEffect(() => {
+  // useEffect(() => {
+    
+  // }, []);
+
+  useFocusEffect(useCallback(() => {
     getWorkouts();
-  }, []);
+  }, []))
 
   const onBackPress = () => {
     props.navigation.navigate(screens.MANAGE_EXERCICES)

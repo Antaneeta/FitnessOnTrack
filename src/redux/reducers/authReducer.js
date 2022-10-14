@@ -4,6 +4,7 @@ const initialState = {
   user: null,
   userProfile: null,
   initialRoute: null,
+  workoutRoutines: [],
 };
 
 const authReducer = (state = initialState, action) => {
@@ -16,6 +17,9 @@ const authReducer = (state = initialState, action) => {
 
     case authActionTypes.SET_USER_PROFILE:
       return { ...state, userProfile: action.payload };
+
+    case 'SET_WORKOUT_ROUTINE': 
+      return { ...state, workoutRoutines: [... state.workoutRoutines, action.payload] }
       
     default:
       return state;

@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity} from 'react-native';
 import React, {useState, useFocusEffect} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -17,27 +17,26 @@ import {
 } from '../../../components';
 import * as colors from '../../../Themes/colors';
 import { screens } from '../../../constants';
+import { useDispatch } from 'react-redux';
 
 const Exercise = props => {
-  const [name, setName] = useState();
-  const [equipment, setEquipments] = useState();
-  const [muscle, setMuscle] = useState();
-  const [category, setCategory] = useState();
-  const [sets, setSets] = useState();
-  const [reps, setReps] = useState();
-  const [weight, setWeight] = useState();
-  const [time, setTime] = useState();
-  const [image, setImage] = useState([]);
+
+  const dispatch = useDispatch();
+  const [name, setName] = useState('');
+  const [equipment, setEquipments] = useState('');
+  const [muscle, setMuscle] = useState('');
+  const [category, setCategory] = useState('');
+  const [sets, setSets] = useState(null);
+  const [reps, setReps] = useState(null);
+  const [weight, setWeight] = useState('');
+  const [time, setTime] = useState('');
+  const [image, setImage] = useState(null);
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-  const exName = props.route.params?.name;
-  const exMuscle = props.route.params?.muscle;
-  const exEquipment = props.route.params?.equipment;
-  const exCategory = props.route.params?.category;
-  const desc = props.route.params?.desc;
-  const exSets = props.route.params?.set;
-  const exReps = props.route.params?.rep;
+  const item = props.route.params;
+
+  console.log(props.route.params)
 
  const chooseFromLibrary = async () => {
     function split(str, index) {
@@ -118,20 +117,22 @@ const Exercise = props => {
       reps: parseInt(reps),
       weight: parseInt(weight),
     };
-    firestore()
-      .collection('Workout')
-      .add(workout)
-      .then(result => {
-        console.log(result);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    // firestore()
+    //   .collection('Workout')
+    //   .add(workout)
+    //   .then(result => {
+    //     console.log(result);
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //   });
+    dispatch({ type: 'SET_WORKOUT_ROUTINE', payload: item })
+    props.navigation.navigate(screens.MANAGE_EXERCICES)
   };
 
   return (
     <Layout>
-      <Header title={' Title '} titleStyle={styles.titleStyle1} onPress = {onBackClick}/>
+      <Header title={item?.name} titleStyle={styles.titleStyle1} onPress = {onBackClick}/>
       <ScrollView>
         <View style={styles.subContainer}>
           <TextInputWithIcon
@@ -139,7 +140,7 @@ const Exercise = props => {
               onChangeText: setName,
               placeholder: 'Name of the Exercise',
               placeHolderTextColor: colors.LightBlue,
-              value: exName,
+              value: item?.name,
             }}
           />
           <TextInputWithIcon
@@ -147,7 +148,7 @@ const Exercise = props => {
               onChangeText: setMuscle,
               placeholder: 'Muscle',
               placeHolderTextColor: colors.Gray2,
-              value: exMuscle,
+              value: item?.muscle,
             }}
           />
           <TextInputWithIcon
@@ -155,7 +156,7 @@ const Exercise = props => {
               onChangeText: setEquipments,
               placeholder: 'Equipments',
               placeHolderTextColor: colors.Gray2,
-              value: exEquipment,
+              value: item?.equipment,
             }}
           />
 
@@ -164,12 +165,12 @@ const Exercise = props => {
               onChangeText: setCategory,
               placeholder: 'category',
               placeHolderTextColor: colors.Gray2,
-              value: exCategory,
+              value: item?.category,
             }}
           />
           <View>
             <Text style={styles.primaryTitle}>Photo Or video</Text>
-            <View style={styles.attachment}></View>
+            <Image style={styles.attachment} source={{ uri: item?.image }} />
           </View>
           <View
             style={{
@@ -182,7 +183,7 @@ const Exercise = props => {
                 onChangeText: setSets,
                 placeholder: 'Sets',
                 placeHolderTextColor: colors.Gray2,
-                value: exSets,
+                value: item?.sets?.toString(),
               }}
             />
             <TextInputSmall
@@ -190,7 +191,7 @@ const Exercise = props => {
                 onChangeText: setReps,
                 placeholder: 'Reps',
                 placeHolderTextColor: colors.Gray2,
-                value: exReps,
+                value: item?.reps?.toString(),
               }}
             />
             <TextInputSmall
@@ -198,7 +199,7 @@ const Exercise = props => {
                 onChangeText: setWeight,
                 placeholder: 'Weight',
                 placeHolderTextColor: colors.Gray2,
-                value: weight,
+                value: item?.weight ? item?.weight?.toString() : '',
               }}
             />
           </View>
@@ -236,7 +237,7 @@ const Exercise = props => {
           <View>
             <Text style={styles.primaryTitle}>Descriptions</Text>
             <Text>
-              {desc}
+              {item.desc}
             </Text>
           </View>
           <View style={{alignItems: 'center', marginVertical: 25}}>

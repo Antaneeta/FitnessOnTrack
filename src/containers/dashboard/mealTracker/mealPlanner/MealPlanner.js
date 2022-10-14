@@ -27,6 +27,7 @@ const MealPlanner = () => {
     const [cardData, setCardData] = useState(DATA)
     const [mealList, setMealList] = useState('')
     const screenWidth = 300
+    const navigation = useNavigation()
 
     const renderItem = ({ item, index }) => (
         <CardItem item={item} />
@@ -57,7 +58,7 @@ const MealPlanner = () => {
 
                 <TouchableOpacity style={styles.checkButton}>
                     <Text style={styles.titleBtn}>Daily Meal Schedule</Text>
-                    <TouchableOpacity style={styles.checkBtn}>
+                    <TouchableOpacity style={styles.checkBtn} >
                         <Text style={styles.textButton}>Check</Text>
                     </TouchableOpacity>
                 </TouchableOpacity>
@@ -76,7 +77,7 @@ const MealPlanner = () => {
                         keyExtractor={item => item.id}
                     />
                     <View style={{ justifyContent: 'space-around' }}>
-                        <AddIcon />
+                        <AddIcon onPress={() => navigation.navigate(screens.ADDMEAL)}/>
                     </View>
                 </View>
             </ScrollView>

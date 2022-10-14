@@ -16,6 +16,7 @@ const workout2 =require('./workout2.png')
 const AbWorkout = require('./AbWorkout.png')
 const fullbodyWorkout = require('./fullbodyWorkout.png')
 const lowerbodyWorkout = require ('./lowerbodyWorkout.png')
+const salmon = require ('./salmon.png')
 const banana = require ('./banana.png')
 const ww = require('./ww.png')
 const ww1 = require('./ww1.png')
@@ -35,6 +36,7 @@ const Eq1 =require('./Eq1.png')
 const Eq2 =require('./Eq2.png')
 const Eq3 =require('./Eq3.png')
 const milk = require('./milk.png')
+const pizza = require('./Pizza.png')
 
 export {
     onb1,
@@ -67,6 +69,7 @@ export {
     kalIcon,
     milk,
     ProteinIcon,
+    salmon,
     ww,
     ww1,
     ww2,

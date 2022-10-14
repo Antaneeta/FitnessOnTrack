@@ -4,6 +4,7 @@ import Entypo from "react-native-vector-icons/Entypo"
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer'
+import auth from '@react-native-firebase/auth'
 
 import { screens } from '../../../constants'
 import { hp,wp } from '../../../utils/screenResponsiveFunctions'

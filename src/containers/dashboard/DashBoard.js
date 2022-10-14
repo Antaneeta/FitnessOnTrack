@@ -67,7 +67,8 @@ const DashBoard = props => {
         <View style={styles.greenCard}>
           <View style={{ borderRadius: 50, backgroundColor: `rgba(255, 255, 255, ${0.4})`, borderColor: `rgba(0, 0, 0, ${0.6})`, position: 'absolute', height: 70, width: 70, marginLeft: -25 }} />
           <Text style={styles.cardMainText}>BMI (Body Mass Index)</Text>
-          <Text style={styles.cardSubText}>you have a normal weight</Text>
+          <Text style={styles.cardSubText}>you have a Normal weight</Text>
+          <Text style={[styles.cardSubText,{color:color.DarkPurple,fontSize:18}]}>23.4 kg/m2</Text>
           <ProgressChart
             data={data}
             width={wp(80)}

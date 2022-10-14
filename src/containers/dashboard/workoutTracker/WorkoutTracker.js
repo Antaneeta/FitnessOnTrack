@@ -202,7 +202,7 @@ const ITEMSET = [
   },
   {
     image:images.AbWorkout,
-    catogory:'Upperbody Workout',
+    catogory:'Ab and belly fat',
     rep:'14 Exercises | 20mins',
     status:false,
   }
